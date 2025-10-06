@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} — Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="resume-body">
+
+    <!-- Side images -->
+    <div class="side-image left">
+        <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Left Image">
+    </div>
+
+    <div class="resume-content">
+        <div class="resume-card">
+            <h1>{{ name }}</h1>
+            <h2>{{ title }}</h2>
+
+            <div class="contact-info">
+                <p><strong>Email:</strong> {{ email }}</p>
+                <p><strong>Phone:</strong> {{ phone }}</p>
+            </div>
+
+            <hr>
+
+            <section class="summary">
+                <h3>Summary</h3>
+                <p>{{ summary }}</p>
+            </section>
+
+            <section class="experience">
+                <h3>No Experience</h3>
+                {% for job in experience %}
+                <div class="job">
+                    <h4>{{ job.role }} — <span>{{ job.company }}</span></h4>
+                    <p class="years">{{ job.years }}</p>
+                    <p>{{ job.description }}</p>
+                </div>
+                {% endfor %}
+            </section>
+
+            <section class="education">
+                <h3>NO Education</h3>
+                {% for edu in education %}
+                <div class="edu">
+                    <p><strong>{{ edu.degree }}</strong></p>
+                    <p>{{ edu.school }} ({{ edu.years }})</p>
+                </div>
+                {% endfor %}
+            </section>
+
+            <section class="skills">
+                <h3>NO Skills</h3>
+                <ul>
+                    {% for skill in skills %}
+                    <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <div class="back-btn">
+                <a href="{{ url_for('landing') }}" class="btn">← Back to Landing</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-image right">
+        <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Right Image">
+    </div>
+
+</body>
+</html>
