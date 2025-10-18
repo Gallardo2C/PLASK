@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Are you Ready?</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freelance Marketplace System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="landing-body">
-    <div class="side-image left">
-        <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Left Image">
-    </div>
+  <div class="side-image left">
+    <!-- <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Left Image"> -->
+  </div>
 
-    <div class="center-content">
-        <h1>Welcome!</h1>
-        <p>Explore my experience, skills, background and friends.</p>
-        <a href="{{ url_for('resume') }}" class="btn">View Me</a>
-    </div>
+  <div class="center-content">
+    <h1>Welcome!</h1>
+    <p>Explore our Services.</p>
+    <!-- single main button -->
+    <a href="{{ url_for('login') }}" class="btn">Login</a>
+  </div>
 
-    <div class="side-image right">
-        <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Right Image">
-    </div>
+  <div class="side-image right">
+    <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Right Image">
+  </div>
 </body>
 </html>

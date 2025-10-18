@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Top-right profile button */
+    .top-nav {
+      position: fixed; /* stays visible when scrolling */
+      top: 20px;
+      right: 40px;
+      z-index: 999; /* ensures it’s above other elements */
+    }
+
+    .top-nav .btn {
+      background-color: #1e293b;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .top-nav .btn:hover {
+      background-color: #334155;
+    }
+
+    /* Delete button style */
+    .job-card form button {
+      background-color: #dc2626; /* red for delete */
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .job-card form button:hover {
+      background-color: #b91c1c;
+    }
+  </style>
+</head>
+<body class="landing-body">
+
+  <!-- Top-right profile button -->
+  <div class="top-nav">
+    <a href="{{ url_for('profile') }}" class="btn">👤 Profile</a>
+  </div>
+
+  <div class="side-image left">
+    <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Left Image">
+  </div>
+
+  <div class="center-content">
+    <h1>Welcome, {{ username }}!</h1>
+    <p>This is your employer dashboard.</p>
+
+    <a href="{{ url_for('add_job') }}" class="btn">➕ Add a New Job</a>
+
+    <h2 style="margin-top: 30px;">Your Posted Jobs</h2>
+    {% if jobs %}
+      <div class="jobs-list">
+        {% for job in jobs %}
+          <div class="job-card">
+            <h3>{{ job.title }}</h3>
+            <p class="small"><strong>{{ job.company }}</strong> • {{ job.location }}</p>
+            <p>{{ job.description }}</p>
+
+            <!-- Delete button -->
+            <form action="{{ url_for('delete_job', job_id=job.id) }}" method="post" style="margin-top:10px;">
+              <button type="submit">🗑 Delete</button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No jobs posted yet.</p>
+    {% endif %}
+
+    <p style="margin-top:18px;">
+      <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    </p>
+  </div>
+
+  <div class="side-image right">
+    <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Right Image">
+  </div>
+
+</body>
+</html>

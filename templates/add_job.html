@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Job</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-$END$
+<body class="landing-body">
+  <div class="center-content">
+    <h1>Add New Job</h1>
+
+    <form action="{{ url_for('add_job') }}" method="post" class="job-form">
+      <label for="title">Job Title:</label><br>
+      <input type="text" id="title" name="title" required><br><br>
+
+      <label for="company">Company:</label><br>
+      <input type="text" id="company" name="company" required><br><br>
+
+      <label for="location">Location:</label><br>
+      <input type="text" id="location" name="location" required><br><br>
+
+      <label for="description">Description:</label><br>
+      <textarea id="description" name="description" rows="4" cols="40" required></textarea><br><br>
+
+      <button type="submit" class="btn">Add Job</button>
+    </form>
+
+    <p style="margin-top:18px;">
+      <a href="{{ url_for('jobs') }}" class="btn">← Back to Jobs</a>
+    </p>
+  </div>
 </body>
 </html>
