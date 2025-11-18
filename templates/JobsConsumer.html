@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Listings - DirectLink</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial,sans-serif;background:url('{{url_for("static",filename="images/Background1.jpg")}}') center fixed;background-size:cover;color:#333;min-height:100vh;display:flex;flex-direction:column}
+    nav{background:#333;position:relative}
+    nav ul{list-style:none;display:flex;justify-content:center;padding:0 140px 0 20px;flex-wrap:wrap}
+    nav ul li a{color:white;padding:14px 25px;display:block;text-decoration:none}
+    nav ul li a:hover{background:#555}
+    nav ul li:nth-child(3) a{background:#E37538}
+    .logout-btn{position:absolute;top:0;right:0;background:#c0392b;color:white;padding:14px 30px;text-decoration:none;font-weight:bold}
+    .logout-btn:hover{background:#e74c3c}
+    header{background:rgba(34,34,34,0.8);color:white;text-align:center;padding:60px 20px 30px}
+    header img{height:120px;margin-bottom:20px}
+    header h1{font-size:2.5em}
+    main{flex:1;padding:40px 20px;max-width:1100px;margin:auto}
+    .jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px;margin-top:30px}
+    .job-card{background:rgba(255,255,255,0.96);border-radius:12px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,0.15);transition:all .3s;cursor:pointer}
+    .job-card:hover{transform:translateY(-10px);box-shadow:0 15px 35px rgba(0,0,0,0.25)}
+    .job-card h3{color:#E37538;font-size:1.4em;margin-bottom:10px}
+    .company{font-weight:bold;font-size:1.1em}
+    .location{color:#666;margin:8px 0}
+    .date{font-size:0.9em;color:#999}
+    .desc{margin-top:15px;line-height:1.6;color:#444}
+
+    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);justify-content:center;align-items:center}
+    .modal-content{background:white;padding:40px;border-radius:16px;width:90%;max-width:480px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.4);animation:pop .4s}
+    @keyframes pop{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+    .close{position:absolute;top:15px;right:25px;font-size:35px;font-weight:bold;color:#aaa;cursor:pointer}
+    .close:hover{color:#000}
+    .contact-info{margin:25px 0;line-height:2;font-size:1.2em}
+    .contact-info strong{color:#E37538}
+    footer{background:#E37538;color:white;text-align:center;padding:20px}
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('consumer_dashboard') }}">Home</a></li>
+      <li><a href="{{ url_for('profile_consumer') }}">Profile</a></li>
+      <li><a href="{{ url_for('jobs_consumer') }}">Job Listings</a></li>
+    </ul>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </nav>
+
+  <header>
+    <img src="{{ url_for('static', filename='images/DL.png') }}" alt="DirectLink Logo">
+    <h1>Available Jobs</h1>
+    <p>Click any job to contact the provider</p>
+  </header>
+
+  <main>
+    {% if jobs|length == 0 %}
+      <p style="color:white;font-size:1.6em;text-align:center;margin-top:80px">No jobs posted yet. Check back soon!</p>
+    {% else %}
+      <div class="jobs-grid">
+        {% for job in jobs %}
+          <div class="job-card" onclick="showContact()">
+            <h3>{{ job.title }}</h3>
+            <div class="company">{{ job.company }}</div>
+            <div class="location">{{ job.location }}</div>
+            <div class="date">Posted: {{ job.posted_date or 'Recently' }}</div>
+            {% if job.description %}
+              <div class="desc">{{ job.description[:180] }}{% if job.description|length > 180 %}...{% endif %}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </main>
+
+  <!-- Placeholder Contact Modal (same for every job) -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('contactModal').style.display='none'">×</span>
+      <h2>Contact the Provider</h2>
+      <div class="contact-info">
+        <p><strong>Business Name:</strong> DirectLink Partner</p>
+        <p><strong>Phone:</strong> +1 (555) 987-6543</p>
+        <p><strong>Email:</strong> jobs@directlink.com</p>
+        <p><strong>Website:</strong> www.directlink.com/jobs</p>
+        <p style="margin-top:30px;color:#666;font-style:italic;">
+          Call or email the provider directly to apply!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 DirectLink. All rights reserved.</footer>
+
+  <script>
+    function showContact() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+    // Close modal when clicking outside or on ×
+    window.onclick = function(e) {
+      const modal = document.getElementById('contactModal');
+      if (e.target === modal || e.target.classList.contains('close')) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

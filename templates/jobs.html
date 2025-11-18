@@ -1,40 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jobs — Freelance Marketplace</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="landing-body">
-  <div class="side-image left">
-    <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Left Image">
-  </div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Listings - DirectLink</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: url('{{ url_for("static", filename="images/Background1.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav { background-color: #333; }
+    nav ul { list-style: none; display: flex; justify-content: center; }
+    nav ul li a { display: block; padding: 14px 20px; color: white; text-decoration: none; }
+    nav ul li a:hover { background-color: #555; }
+    .active { background-color: #E37538; }
+    .active:hover { background-color: #d1662e; }
 
-  <div class="center-content">
+    header {
+      background-color: rgba(34, 34, 34, 0.8);
+      color: white;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+    header img { height: 120px; margin-bottom: 20px; }
+    header h1 { font-size: 2.5em; }
+
+    main { flex: 1; padding: 40px 20px; max-width: 1100px; margin: auto; }
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .job-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .job-card:hover { transform: translateY(-5px); }
+    .job-card h3 { color: #E37538; margin-bottom: 10px; }
+    .job-card .company { font-weight: bold; color: #333; }
+    .job-card .location { color: #666; margin: 8px 0; }
+    .job-card .date { font-size: 0.9em; color: #999; }
+    .job-card .desc { margin-top: 15px; line-height: 1.5; }
+
+    .no-jobs {
+      text-align: center;
+      padding: 60px;
+      font-size: 1.3em;
+      color: white;
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
+    }
+
+    .button {
+      background-color: #E37538;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .button:hover { background-color: #d1662e; }
+
+    footer {
+      background-color: #E37538;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('registered') }}">Home</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('create_job') }}">Post a Job</a></li>
+      <li><a href="{{ url_for('jobs') }}">Job Listings</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <img src="{{ url_for('static', filename='images/DL.png') }}" alt="DirectLink Logo">
     <h1>Available Jobs</h1>
-    {% if jobs %}
-      <div class="jobs-list">
+    <p>Browse opportunities posted by our trusted network</p>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <p style="color:green; text-align:center; font-weight:bold;">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if jobs|length == 0 %}
+      <div class="no-jobs">
+        <h2>No jobs posted yet</h2>
+        <p>Be the first to post one!</p>
+        <a href="{{ url_for('create_job') }}" class="button">Post a Job Now</a>
+      </div>
+    {% else %}
+      <div class="jobs-grid">
         {% for job in jobs %}
           <div class="job-card">
             <h3>{{ job.title }}</h3>
-            <p class="small"><strong>{{ job.company }}</strong> • {{ job.location }} • Posted {{ job.posted }}</p>
-            <p>{{ job.description }}</p>
+            <div class="company">{{ job.company }}</div>
+            <div class="location">{{ job.location }}</div>
+            <div class="date">Posted: {{ job.posted }}</div>
+            {% if job.description %}
+              <div class="desc">{{ job.description[:200] }}{% if job.description|length > 200 %}...{% endif %}</div>
+            {% endif %}
           </div>
         {% endfor %}
       </div>
-    {% else %}
-      <p>No jobs posted yet. Check back later.</p>
     {% endif %}
+  </main>
 
-    <p style="margin-top:18px;">
-      <a href="{{ url_for('landing') }}" class="btn">← Back</a>
-
-    </p>
-  </div>
-
-  <div class="side-image right">
-    <!--<img src="{{ url_for('static', filename='image2.jpg') }}" alt="Right Image">-->
-  </div>
+  <footer>
+    <p>© 2025 DirectLink Company. All rights reserved.</p>
+  </footer>
 </body>
 </html>

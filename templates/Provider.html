@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provider Dashboard - DirectLink</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: url('{{ url_for("static", filename="images/Background1.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav { background-color: #333; }
+    nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; }
+    nav ul li a { display: block; padding: 14px 20px; color: white; text-decoration: none; }
+    nav ul li a:hover { background-color: #555; }
+    nav ul li:first-child a { background-color: #E37538; }
+    nav ul li:first-child a:hover { background-color: #d1662e; }
+    header { background-color: rgba(34,34,34,0.8); color: white; text-align: center; padding: 60px 20px; }
+    header img { height: 120px; margin-bottom: 20px; }
+    header h1 { font-size: 2.5em; }
+    main { flex: 1; padding: 40px 20px; max-width: 1000px; margin: auto; text-align: center; }
+    .button { background: #E37538; color: white; padding: 14px 30px; border-radius: 6px; text-decoration: none; display: inline-block; margin: 20px; }
+    .button:hover { background: #d1662e; }
+    footer { background-color: #E37538; color: white; text-align: center; padding: 25px; margin-top: auto; }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('provider_dashboard') }}">Home</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('create_job') }}">Post a Job</a></li>
+      <li><a href="{{ url_for('jobs') }}">Job Listings</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <img src="{{ url_for('static', filename='images/DL.png') }}" alt="Logo">
+    <h1>Welcome, {{ username }}!</h1>
+    <p>Provider Dashboard — Post jobs and grow your business</p>
+  </header>
+
+  <main>
+    <h2>Quick Actions</h2>
+    <a href="{{ url_for('create_job') }}" class="button">Post a New Job</a>
+    <a href="{{ url_for('jobs') }}" class="button">View All Jobs</a>
+  </main>
+
+  <footer>
+    <p>© 2025 DirectLink Company. All rights reserved.</p>
+  </footer>
+</body>
+</html>

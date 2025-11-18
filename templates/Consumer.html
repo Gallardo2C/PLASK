@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consumer Dashboard - DirectLink</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('{{ url_for("static", filename="images/Background1.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: #333;
+      position: relative; /* For absolute positioning of logout */
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 130px 0 20px; /* Space on the right for logout button */
+    }
+    nav ul li a {
+      display: block;
+      padding: 14px 20px;
+      color: white;
+      text-decoration: none;
+    }
+    nav ul li a:hover { background-color: #555; }
+
+    /* Highlight current page (Home) */
+    nav ul li:nth-child(1) a {
+      background-color: #E37538;
+    }
+    nav ul li:nth-child(1) a:hover {
+      background-color: #d1662e;
+    }
+
+    /* LOGOUT BUTTON – Top Right */
+    .logout-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #c0392b;
+      color: white;
+      padding: 14px 24px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .logout-btn:hover {
+      background-color: #e74c3c;
+    }
+
+    header {
+      background-color: rgba(34, 34, 34, 0.8);
+      color: white;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+    header img { height: 120px; margin-bottom: 20px; }
+    header h1 { font-size: 2.5em; }
+
+    main {
+      flex: 1;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    section {
+      margin-bottom: 60px;
+      text-align: center;
+    }
+
+    .slider-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 20px;
+      flex-wrap: nowrap;
+      width: 100%;
+      -webkit-overflow-scrolling: touch;
+    }
+    .slider-container img {
+      min-width: 250px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .button {
+      background-color: #E37538;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      margin-top: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s;
+    }
+    .button:hover { background-color: #d1662e; }
+
+    footer {
+      background-color: #E37538;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: auto;
+    }
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('consumer_dashboard') }}">Home</a></li>
+      <li><a href="{{ url_for('profile_consumer') }}">Profile</a></li>
+      <li><a href="{{ url_for('jobs_consumer') }}">Job Listings</a></li>
+    </ul>
+
+    <!-- Logout Button – Top Right -->
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </nav>
+
+  <header>
+    <img src="{{ url_for('static', filename='images/DL.png') }}" alt="DirectLink Logo">
+    <h1>Welcome Back, {{ username }}!</h1>
+    <p>Explore job opportunities tailored for you</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Find Your Next Opportunity</h2>
+      <p>Browse hundreds of verified job postings from trusted providers in our network.</p>
+
+      <div class="slider-container">
+        <img src="{{ url_for('static', filename='images/construc.png') }}" alt="Construction">
+        <img src="{{ url_for('static', filename='images/hand.webp') }}" alt="Handshake">
+        <img src="{{ url_for('static', filename='images/cleaning.png') }}" alt="Cleaning">
+        <img src="{{ url_for('static', filename='images/Computer-Repair-miami.jpg') }}" alt="Tech">
+        <img src="{{ url_for('static', filename='images/customerservice.jpg') }}" alt="Support">
+      </div>
+
+      <a href="{{ url_for('jobs_consumer') }}" class="button">Browse All Jobs</a>
+    </section>
+
+    <section>
+      <h2>Trusted by Thousands</h2>
+      <p>We partner with top companies to bring you reliable, high-quality opportunities.</p>
+      <a href="https://www.deloitte.com/it/it/services.html" class="button">See Our Partners</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 DirectLink Company. All rights reserved.</p>
+    <p>
+      <a href="{{ url_for('consumer_dashboard') }}">Home</a> |
+      <a href="{{ url_for('profile_consumer') }}">Profile</a> |
+      <a href="{{ url_for('jobs_consumer') }}">Job Listings</a>
+    </p>
+  </footer>
+
+</body>
+</html>

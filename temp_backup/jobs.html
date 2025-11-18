@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jobs — Freelance Marketplace</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="landing-body">
+  <div class="side-image left">
+    <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Left Image">
+  </div>
+
+  <div class="center-content">
+    <h1>Available Jobs</h1>
+    {% if jobs %}
+      <div class="jobs-list">
+        {% for job in jobs %}
+          <div class="job-card">
+            <h3>{{ job.title }}</h3>
+            <p class="small"><strong>{{ job.company }}</strong> • {{ job.location }} • Posted {{ job.posted }}</p>
+            <p>{{ job.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No jobs posted yet. Check back later.</p>
+    {% endif %}
+
+    <p style="margin-top:18px;">
+      <a href="{{ url_for('landing') }}" class="btn">← Back</a>
+
+    </p>
+  </div>
+
+  <div class="side-image right">
+    <!--<img src="{{ url_for('static', filename='image2.jpg') }}" alt="Right Image">-->
+  </div>
+</body>
+</html>

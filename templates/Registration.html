@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - DirectLink</title>
+  <title>Register - DirectLink</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
   <section class="login-form">
-    <h2>Login</h2>
-    <form method="POST" action="/login">
+    <h2>Register</h2>
+    <form method="POST" action="/register">
       <label for="username">Username</label>
       <input type="text" id="username" name="username" required>
 
@@ -19,12 +19,20 @@
         <button type="button" class="show-password" id="togglePassword">Show</button>
       </div>
 
+      <label for="role">Select Role</label>
+      <select id="role" name="role" required>
+        <option value="">--Choose Role--</option>
+        <option value="Consumer">Consumer</option>
+        <option value="Provider">Provider</option>
+        <option value="Admin">Admin</option>
+      </select>
+
       <p class="error-message" id="errorText"></p>
 
-      <button type="submit">Log In</button>
+      <button type="submit">Register</button>
     </form>
 
-    <p>Don't have an account? <a href="/register">Register here</a></p>
+    <p>Already have an account? <a href="/login">Login here</a></p>
   </section>
 
   <script>

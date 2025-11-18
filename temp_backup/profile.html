@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - {{ user.username }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="landing-body">
+  <div class="side-image left">
+    <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Left Image">
+  </div>
+
+  <div class="center-content">
+    <h1>{{ user.username }}’s Profile</h1>
+    <p><strong>User ID:</strong> {{ user.id }}</p>
+    <p><strong>Role:</strong> {{ user.role }}</p>
+
+    {% if user.role == 'employer' %}
+      <p>You are an <strong>Employer</strong>. You can post and manage jobs.</p>
+      <a href="{{ url_for('employer_dashboard') }}" class="btn">Go to Employer Dashboard</a>
+    {% else %}
+      <p>You are a <strong>User</strong>. You can browse and apply to jobs.</p>
+      <a href="{{ url_for('jobs') }}" class="btn">Browse Jobs</a>
+    {% endif %}
+
+    <p style="margin-top: 20px;">
+      <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    </p>
+  </div>
+
+  <div class="side-image right">
+    <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Right Image">
+  </div>
+</body>
+</html>

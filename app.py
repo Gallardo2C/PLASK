@@ -5,217 +5,273 @@ from flask import Flask, render_template, url_for, request, redirect, session, f
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-# ---------------------- LANDING ----------------------
+# ---------- NEW ROUTES FOR YOUR HTML FILES ----------
 @app.route('/')
-def landing():
-    data = {
-        "name": "Jade D. Gallardo",
-        "tagline": "Developer • Designer • Dreamer"
-    }
-    return render_template('landing.html', **data)
+def home():
+    return render_template('Home.html')
 
+@app.route('/contact')
+def contact():
+    return render_template('Contacts.html')
 
-# ---------------------- JOBS ----------------------
-@app.route('/jobs')
-def jobs():
-    # Require login
-    if 'user' not in session:
-        flash('Please log in first.', 'warning')
-        return redirect(url_for('login'))
+# ---------- CREATE JOB ROUTES ----------
+@app.route('/create-job')
+def create_job():
+    if 'username' not in session:
+        flash('You must be logged in to post a job.')
+        return redirect(url_for('home'))
+    return render_template('Create.html')
 
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute('SELECT id, title, company, location, description, posted FROM jobs ORDER BY id DESC')
-    jobs_data = [
-        {
-            "id": row[0],
-            "title": row[1],
-            "company": row[2],
-            "location": row[3],
-            "description": row[4],
-            "posted": row[5]
-        }
-        for row in c.fetchall()
-    ]
-    conn.close()
-    return render_template('jobs.html', jobs=jobs_data, username=session['user'])
+@app.route('/create-job', methods=['POST'])
+def create_job_submit():
+    if 'username' not in session:
+        flash('You must be logged in to post a job.')
+        return redirect(url_for('home'))
 
+    title = request.form.get('title', '').strip()
+    company = request.form.get('company', '').strip()
+    location = request.form.get('location', '').strip()
+    description = request.form.get('description', '').strip()
 
-# ---------------------- ADD JOB ----------------------
-@app.route('/add', methods=['GET', 'POST'])
-def add_job():
-    if 'user' not in session:
-        flash('Please log in to post a job.', 'warning')
-        return redirect(url_for('login'))
+    if not title or not company or not location:
+        return render_template('Create.html', error="Title, Company and Location are required fields.")
 
-    if request.method == 'POST':
-        title = request.form['title']
-        company = request.form['company']
-        location = request.form['location']
-        description = request.form['description']
-
-        conn = sqlite3.connect('database.db')
-        c = conn.cursor()
-        c.execute('INSERT INTO jobs (title, company, location, description) VALUES (?, ?, ?, ?)',
-                  (title, company, location, description))
+    try:
+        conn = sqlite3.connect('directlink.db')
+        conn.execute('INSERT INTO jobs (title, company, location, description) VALUES (?, ?, ?, ?)',
+                     (title, company, location, description))
         conn.commit()
         conn.close()
+        flash('Job posted successfully!')
+    except Exception as e:
+        return render_template('Create.html', error=f"Database error: {str(e)}")
 
-        flash('Job added successfully!', 'success')
-        return redirect(url_for('jobs'))
+    return redirect(url_for('create_job'))
+@app.route('/jobs')
+def jobs():
+    if 'username' not in session:
+        flash('You must be logged in to view jobs.')
+        return redirect(url_for('home'))
 
-    return render_template('add_job.html')
-
-
-# ---------------------- REGISTER ----------------------
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        role = request.form['role']
-        hashed_pw = generate_password_hash(password)
-
-        conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        try:
-            c.execute(
-                'INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
-                (username, hashed_pw, role)
-            )
-            conn.commit()
-        except sqlite3.IntegrityError:
-            conn.close()
-            return "⚠️ Username already exists!"
-        conn.close()
-
-        return redirect(url_for('login'))
-    return render_template('register.html')
-
-
-
-# ---------------------- LOGIN ----------------------
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        c.execute('SELECT password, role FROM users WHERE username = ?', (username,))
-        user = c.fetchone()
-        conn.close()
-
-        if user and check_password_hash(user[0], password):
-            session['user'] = username
-            session['role'] = user[1]
-
-            if user[1] == 'employer':
-                return redirect(url_for('employer_dashboard'))
-            else:
-                return redirect(url_for('jobs'))
-        else:
-            return "Invalid username or password!"
-
-    return render_template('login.html')
-
-
-# ---------------------- LOGOUT ----------------------
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    flash('Logged out successfully.', 'info')
-    return redirect(url_for('login'))
-
-
-# ---------------------- RESUME ----------------------
-@app.route('/resume')
-def resume():
-    data = {
-        "name": "Jade Deevyd D. Gallardo",
-        "title": "Software Developer",
-        "email": "jade@gmail.com",
-        "phone": "+63 900 123 4567",
-        "summary": "not PASSIONATE developer with no EXPERIENCE in Python, Flask, and modern web technologies.",
-        "experience": [
-            {"role": "Backend Developer", "company": "TechCorp", "years": "2023–2025",
-             "description": "Built APIs and managed databases using Flask and PostgreSQL with the Help of Tito."},
-            {"role": "Intern", "company": "HardBard", "years": "2022–2022",
-             "description": "Assisted in developing internal tools and consultations of Tito Gpt."}
-        ],
-        "education": [
-            {"degree": "BS in Computer Science", "school": "University of the Calajo-an", "years": "2019–2023"}
-        ],
-        "skills": ["Python", "Flask", "SQL", "HTML", "CSS", "JavaScript"]
-    }
-    return render_template('resume.html', **data)
-
-@app.route('/employer')
-def employer_dashboard():
-    if 'user' not in session or session.get('role') != 'employer':
-        return redirect(url_for('login'))
-
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('directlink.db')
+    conn.row_factory = sqlite3.Row  # This lets us use row['title'] etc.
     c = conn.cursor()
-    c.execute('SELECT id, title, company, location, description, posted FROM jobs ORDER BY id DESC')
-    jobs_data = [
-        {
-            "id": row[0],
-            "title": row[1],
-            "company": row[2],
-            "location": row[3],
-            "description": row[4],
-            "posted": row[5]
-        }
-        for row in c.fetchall()
-    ]
+    c.execute('SELECT * FROM jobs ORDER BY posted DESC')
+    job_list = c.fetchall()
     conn.close()
 
-    return render_template('employer.html', jobs=jobs_data, username=session['user'])
+    return render_template('Jobs.html', jobs=job_list)
+
+@app.route('/partners')
+def partners():
+    return render_template('Partners.html')
+
 
 @app.route('/profile')
 def profile():
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    if 'username' not in session:
+        flash('Please log in first.')
+        return redirect(url_for('home'))
 
-    username = session['user']
-    role = session.get('role')
+    username = session['username']
 
-    # Connect to database and get user info
-    conn = sqlite3.connect('users.db')
+    # Get fresh data directly from DB (never trust session alone)
+    conn = sqlite3.connect('directlink.db')
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    c.execute('SELECT id, username, role FROM users WHERE username = ?', (username,))
-    user_data = c.fetchone()
+    c.execute("SELECT username, role, datetime('now') as joined FROM users WHERE username = ?", (username,))
+    user = c.fetchone()
     conn.close()
 
-    if not user_data:
-        return "User not found."
+    if not user:
+        flash('User not found.')
+        return redirect(url_for('home'))
 
-    user_info = {
-        'id': user_data[0],
-        'username': user_data[1],
-        'role': user_data[2]
-    }
+    return render_template('Profile.html',
+                           username=user['username'],
+                           role=user['role'] or 'User',  # if NULL → show "User"
+                           joined_date=user['joined'][:10])  # just YYYY-MM-DD
+@app.route('/registered')
+def registered():
+    return render_template('Registered.html')
 
-    return render_template('profile.html', user=user_info)
+@app.route('/related')
+def related():
+    return render_template('related.html')
 
-@app.route('/delete/<int:job_id>', methods=['POST'])
-def delete_job(job_id):
-    if 'user' not in session:
-        return redirect(url_for('login'))
+@app.route('/services')
+def services():
+    return render_template('Services.html')
 
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
 
-    # Only allow deletion for employers (optional: check user role here)
-    c.execute('DELETE FROM jobs WHERE id = ?', (job_id,))
-    conn.commit()
+# CONSUMER DASHBOARD
+@app.route('/consumer')
+def consumer_dashboard():
+    if 'username' not in session:
+        flash('Please log in to continue.')
+        return redirect(url_for('home'))
+
+    if session.get('role') != 'Consumer':
+        flash('Access denied. This area is for Consumers only.')
+        return redirect(url_for('registered'))  # or home, whatever you prefer
+
+    return render_template('Consumer.html', username=session['username'])
+
+
+# PROVIDER DASHBOARD
+@app.route('/provider')
+def provider_dashboard():
+    if 'username' not in session:
+        flash('Please log in to continue.')
+        return redirect(url_for('home'))
+
+    if session.get('role') != 'Provider':
+        flash('Access denied. This area is for Providers only.')
+        return redirect(url_for('registered'))
+
+    return render_template('Provider.html', username=session['username'])
+# ---------- SMART LOGIN (redirects by role) ----------
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+
+    conn = sqlite3.connect('directlink.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT password, role FROM users WHERE username=?", (username,))
+    row = cursor.fetchone()
     conn.close()
 
-    return redirect(url_for('employer_dashboard'))  # redirect back to the dashboard
+    if row and check_password_hash(row[0], password):
+        session['username'] = username
+        session['role'] = row[1] or 'Consumer'  # fallback
+
+        role = session['role']
+
+        # Redirect to correct dashboard based on role
+        if role == 'Consumer':
+            return redirect(url_for('consumer_dashboard'))
+        elif role == 'Provider':
+            return redirect(url_for('provider_dashboard'))
+        elif role == 'Admin':
+            return redirect(url_for('registered'))  # or make admin_dashboard later
+        else:
+            return redirect(url_for('registered'))
+
+    else:
+        return render_template('Home.html', error="Invalid username or password")
 
 
+# ---------- SMART REGISTER (same logic) ----------
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.form['username']
+    password = request.form['password']
+    role = request.form['role']
+
+    if not all([username, password, role]):
+        return render_template('Home.html', reg_error="All fields are required.")
+
+    hashed_password = generate_password_hash(password)
+
+    conn = sqlite3.connect('directlink.db')
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+                       (username, hashed_password, role))
+        conn.commit()
+
+        # Auto-login + redirect by role
+        session['username'] = username
+        session['role'] = role
+
+        if role == 'Consumer':
+            return redirect(url_for('consumer_dashboard'))
+        elif role == 'Provider':
+            return redirect(url_for('provider_dashboard'))
+        elif role == 'Admin':
+            return redirect(url_for('registered'))
+        else:
+            return redirect(url_for('registered'))
+
+    except sqlite3.IntegrityError:
+        return render_template('Home.html', reg_error="Username already exists.")
+    finally:
+        conn.close()
+
+
+@app.route('/profile-consumer')
+def profile_consumer():
+    if 'username' not in session:
+        flash('Please log in to view your profile.')
+        return redirect(url_for('home'))
+
+    if session.get('role') != 'Consumer':
+        flash('This profile page is for Consumers only.')
+        return redirect(url_for('registered'))
+
+    username = session['username']
+
+    conn = sqlite3.connect('directlink.db')
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    # This query works EVEN IF created_at column doesn't exist
+    c.execute("SELECT username, role FROM users WHERE username = ?", (username,))
+    user = c.fetchone()
+    conn.close()
+
+    if not user:
+        flash('User not found.')
+        return redirect(url_for('home'))
+
+    # Just show "Today" or a static date — no crash ever
+    return render_template('ProfileConsumer.html',
+                           username=user['username'],
+                           role=user['role'] or 'Consumer',
+                           joined_date="November 2025")  # or use datetime.now().strftime('%B %Y')
+
+
+@app.route('/jobs-consumer')
+def jobs_consumer():
+    # Must be logged in + must be Consumer
+    if 'username' not in session:
+        flash('Please log in to view job listings.')
+        return redirect(url_for('home'))
+
+    if session.get('role') != 'Consumer':
+        flash('This job listing is for Consumers only.')
+        return redirect(url_for('registered'))
+
+    # Get all jobs
+    conn = sqlite3.connect('directlink.db')
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT *, date(posted) as posted_date FROM jobs ORDER BY posted DESC')
+    job_list = c.fetchall()
+    conn.close()
+
+    return render_template('JobsConsumer.html', jobs=job_list)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))  # or 'index', 'home_page', etc.
+
+
+@app.route('/apply_job', methods=['POST'])
+def apply_job():
+    if 'user_id' not in session:
+        return redirect(url_for('home'))
+
+    job_id = request.form['job_id']
+    message = request.form.get('message', '').strip()
+
+    # Save application to DB here
+    # Example: save_application(session['user_id'], job_id, message)
+
+    flash("Application submitted successfully! We'll notify you soon.")
+    return redirect(url_for('jobs_consumer'))
 
 if __name__ == '__main__':
     app.run(debug=True)

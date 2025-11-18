@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trusted Companies | DirectLink</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('{{ url_for("static", filename="images/Background1.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: #333;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0;
+    }
+
+    nav ul li a {
+      display: block;
+      padding: 14px 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    nav ul li a:hover {
+      background-color: #555;
+    }
+
+    /* Highlight current page (Partners) in orange */
+    nav ul li:nth-child(3) a {
+      background-color: #E37538;
+      font-weight: bold;
+    }
+
+    nav ul li:nth-child(3) a:hover {
+      background-color: #d1662e;
+    }
+
+    header {
+      background-color: rgba(34, 34, 34, 0.8);
+      color: white;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    main {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .search-container {
+      margin: 0 auto 30px;
+      max-width: 600px;
+    }
+
+    .search-bar {
+      display: flex;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      background: transparent;
+      font-size: 1em;
+    }
+
+    .search-input:focus {
+      outline: none;
+    }
+
+    .search-button {
+      background: #E37538;
+      color: white;
+      border: none;
+      padding: 0 25px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .search-button:hover {
+      background: #d1662e;
+    }
+
+    .companies-intro {
+      text-align: center;
+      margin-bottom: 40px;
+      color: white;
+      background-color: rgba(34, 34, 34, 0.7);
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .companies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .company-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .company-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .company-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin: 0 auto 15px;
+      display: block;
+      background: white;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .company-name {
+      color: #E37538;
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .company-specialty {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .company-rating {
+      color: #E37538;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    footer {
+      background-color: #E37538;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .companies-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .search-bar {
+        flex-direction: column;
+        border-radius: 8px;
+      }
+      
+      .search-input {
+        padding: 12px 15px;
+      }
+      
+      .search-button {
+        padding: 12px;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('registered') }}">Home</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('partners') }}">Partners</a></li>
+      <li><a href="{{ url_for('contact') }}">Services</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Our Trusted Partners</h1>
+    <p>Vetted companies delivering excellence</p>
+  </header>
+
+  <main>
+    <div class="search-container">
+      <form class="search-bar" action="#">
+        <input type="search" class="search-input" placeholder="Search companies..." name="search">
+        <button type="submit" class="search-button">Search</button>
+      </form>
+    </div>
+
+    <div class="companies-intro">
+      <h2>Premium Service Providers</h2>
+      <p>These companies have been rigorously vetted for quality and reliability in their respective fields.</p>
+    </div>
+
+    <div class="companies-grid">
+      <!-- Company 1 -->
+      <div class="company-card">
+        <img src="images/construc.png" alt="BuildRight Logo" class="company-logo">
+        <h3 class="company-name">BuildRight Construction</h3>
+        <p class="company-specialty">Specialty: Commercial & Residential</p>
+        <p>15+ years in business</p>
+        <p class="company-rating">★★★★★ (4.9/5)</p>
+        <p>Licensed & Insured</p>
+      </div>
+
+      <!-- Company 2 -->
+      <div class="company-card">
+        <img src="images/abstract-technology-background-with-circuit-board-and-blue-lights-digital-communication-line-concept-graphic-hardware-computer-tech-integrated-energy-design-information-internet-generative-ai-.jpg" alt="TechCare Logo" class="company-logo">
+        <h3 class="company-name">TechCare IT Solutions</h3>
+        <p class="company-specialty">Specialty: Business IT Support</p>
+        <p>24/7 Emergency Services</p>
+        <p class="company-rating">★★★★☆ (4.7/5)</p>
+        <p>Microsoft Gold Partner</p>
+      </div>
+
+      <!-- Company 3 -->
+      <div class="company-card">
+        <img src="images/Cleancom.jpeg" alt="CleanSweep Logo" class="company-logo">
+        <h3 class="company-name">CleanSweep Services</h3>
+        <p class="company-specialty">Specialty: Commercial Cleaning</p>
+        <p>Eco-friendly products</p>
+        <p class="company-rating">★★★★★ (4.8/5)</p>
+        <p>Bonded & Insured</p>
+      </div>
+
+      <!-- Company 4 -->
+      <div class="company-card">
+        <img src="images/power-lines.jpg" alt="PowerGrid Logo" class="company-logo">
+        <h3 class="company-name">PowerGrid Electrical</h3>
+        <p class="company-specialty">Specialty: Industrial Electrical</p>
+        <p>Master Electricians</p>
+        <p class="company-rating">★★★★★ (5.0/5)</p>
+        <p>OSHA Certified</p>
+      </div>
+
+      <!-- Company 5 -->
+      <div class="company-card">
+        <img src="images/wp2691421.webp" alt="DataFort Logo" class="company-logo">
+        <h3 class="company-name">DataFort Security</h3>
+        <p class="company-specialty">Specialty: Cybersecurity</p>
+        <p>Enterprise Protection</p>
+        <p class="company-rating">★★★★★ (4.9/5)</p>
+        <p>SOC 2 Certified</p>
+      </div>
+
+      <!-- Company 6 -->
+      <div class="company-card">
+        <img src="images/Landscape-photography-example.jpg" alt="GreenThumb Logo" class="company-logo">
+        <h3 class="company-name">GreenThumb Landscaping</h3>
+        <p class="company-specialty">Specialty: Commercial Landscaping</p>
+        <p>Sustainable Practices</p>
+        <p class="company-rating">★★★★☆ (4.6/5)</p>
+        <p>10-Year Warranty</p>
+      </div>
+
+      <!-- Company 7 -->
+      <div class="company-card">
+        <img src="images/Security.webp" alt="FirstGuard Logo" class="company-logo">
+        <h3 class="company-name">FirstGuard Security</h3>
+        <p class="company-specialty">Specialty: Physical Security</p>
+        <p>Armed & Unarmed Personnel</p>
+        <p class="company-rating">★★★★★ (4.8/5)</p>
+        <p>State Licensed</p>
+      </div>
+
+      <!-- Company 8 -->
+      <div class="company-card">
+        <img src="images/Water.jpg" alt="AquaPure Logo" class="company-logo">
+        <h3 class="company-name">AquaPure Water Systems</h3>
+        <p class="company-specialty">Specialty: Water Treatment</p>
+        <p>Industrial & Residential</p>
+        <p class="company-rating">★★★★★ (4.9/5)</p>
+        <p>NSF Certified</p>
+      </div>
+
+      <!-- Company 9 -->
+      <div class="company-card">
+        <img src="images/logistics.jpg" alt="SwiftMove Logo" class="company-logo">
+        <h3 class="company-name">SwiftMove Logistics</h3>
+        <p class="company-specialty">Specialty: Warehousing & Transport</p>
+        <p>Temperature-Controlled</p>
+        <p class="company-rating">★★★★☆ (4.7/5)</p>
+        <p>GPS Tracked</p>
+      </div>
+
+      <!-- Company 10 -->
+      <div class="company-card">
+        <img src="images/Medicare-Symbol.png" alt="MediCare+ Logo" class="company-logo">
+        <h3 class="company-name">MediCare+ Facilities</h3>
+        <p class="company-specialty">Specialty: Medical Equipment</p>
+        <p>FDA Approved</p>
+        <p class="company-rating">★★★★★ (5.0/5)</p>
+        <p>24/7 Support</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DirectLink Company. All rights reserved.</p>
+    <p>
+      <a href="services.html" style="color: white;">Profile</a> | 
+      <a href="index.html" style="color: white;">Home</a> | 
+      <a href="contact.html" style="color: white;">Contact</a>
+    </p>
+  </footer>
+
+</body>
+</html>

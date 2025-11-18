@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DirectLink - Our Services</title>
+  <style>
+    /* Global Reset and Layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    nav {
+      background-color: #333;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0;
+    }
+
+    nav ul li a {
+      display: block;
+      padding: 14px 20px;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Highlight color for the Services link (2nd item in this new nav structure) */
+    nav ul li:nth-child(2) a {
+      background-color: #E37538;
+    }
+
+    nav ul li a:hover {
+      background-color: #555;
+    }
+
+    nav ul li:nth-child(2) a:hover {
+      background-color: #d1662e;
+    }
+
+    /* Header */
+    header {
+      background-color: rgba(34, 34, 34, 0.8);
+      color: white;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    header img {
+      height: 120px;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+    }
+
+    /* Main Content */
+    main {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 40px auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      flex-grow: 1;
+    }
+
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .service-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card h3 {
+        color: #333;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #E37538;
+    }
+
+    .service-card p {
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .icon {
+        font-size: 3em;
+        color: #E37538;
+        margin-bottom: 20px;
+    }
+
+    .button {
+      background-color: #E37538;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #d1662e;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: auto;
+    }
+
+    footer a {
+        color: #E37538 !important;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+        color: #ffffff !important;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        header {
+            padding: 40px 10px 20px;
+        }
+        header h1 {
+            font-size: 2em;
+        }
+        nav ul {
+            flex-wrap: wrap;
+        }
+        nav ul li a {
+            padding: 10px 15px;
+        }
+    }
+  </style>
+  <!-- Load Font Awesome for service icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<!-- FIX: Background URL uses inline style for Jinja resolution -->
+<body style="background: url('{{ url_for("static", filename="images/Background1.jpg") }}') no-repeat center center fixed; background-size: cover;">
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('registered') }}">Home</a></li>
+      <li><a href="{{ url_for('services') }}">Services</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('partners') }}">Partners</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      {% if 'username' in session %}
+        <li><a href="{{ url_for('logout') }}" style="background-color: #cc0000; padding: 14px 20px;">Logout ({{ session['username'] }})</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <header>
+    <!-- Logo with Flask path -->
+    <img src="{{ url_for('static', filename='images/DL.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/120x120/E37538/ffffff?text=DL';" alt="DirectLink Logo">
+    <h1>Explore Our Comprehensive Services</h1>
+    <p>Solutions tailored for every aspect of your business needs.</p>
+  </header>
+
+  <main>
+    <h2 style="font-size: 2.2em; text-align: center; color: #333; margin-bottom: 40px;">Our Core Offerings</h2>
+
+    <div class="service-grid">
+
+        <!-- Service Card 1: IT & Development -->
+        <div class="service-card">
+            <i class="icon fas fa-code"></i>
+            <h3>Digital Transformation</h3>
+            <p>Full-stack development, cloud migration, and custom software solutions to modernize your operations.</p>
+            <a href="{{ url_for('contact') }}" class="button">Inquire Now</a>
+        </div>
+
+        <!-- Service Card 2: Marketing -->
+        <div class="service-card">
+            <i class="icon fas fa-chart-line"></i>
+            <h3>Strategic Marketing</h3>
+            <p>Data-driven marketing campaigns, SEO, content creation, and social media management for maximum reach.</p>
+            <a href="{{ url_for('contact') }}" class="button">Inquire Now</a>
+        </div>
+
+        <!-- Service Card 3: Consulting -->
+        <div class="service-card">
+            <i class="icon fas fa-handshake"></i>
+            <h3>Business Consulting</h3>
+            <p>Expert advice on process optimization, financial planning, and organizational strategy to drive growth.</p>
+            <a href="{{ url_for('contact') }}" class="button">Inquire Now</a>
+        </div>
+
+        <!-- Service Card 4: Technical Support -->
+        <div class="service-card">
+            <i class="icon fas fa-headset"></i>
+            <h3>24/7 Technical Support</h3>
+            <p>Reliable and immediate technical assistance to minimize downtime and ensure continuous operation.</p>
+            <a href="{{ url_for('contact') }}" class="button">Inquire Now</a>
+        </div>
+
+        <!-- Service Card 5: Infrastructure -->
+        <div class="service-card">
+            <i class="icon fas fa-server"></i>
+            <h3>IT Infrastructure</h3>
+            <p>Managed hosting, network setup, security audits, and data protection services.</p>
+            <a href="{{ url_for('contact') }}" class="button">Inquire Now</a>
+        </div>
+
+        <!-- Service Card 6: Training -->
+        <div class="service-card">
+            <i class="icon fas fa-user-graduate"></i>
+            <h3>Professional Training</h3>
+            <p>Customized training programs for your team in the latest technologies and industry best practices.</p>
+            <a href="{{ url_for('contact') }}" class="button">Inquire Now</a>
+        </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DirectLink Company. All rights reserved.</p>
+    <p>
+      <a href="{{ url_for('services') }}">Services</a> |
+      <a href="{{ url_for('partners') }}">Partners</a> |
+      <a href="{{ url_for('contact') }}">Contact</a>
+    </p>
+    <!-- Display session info only if logged in -->
+    {% if 'username' in session %}
+        <p class="text-xs mt-2">Logged in as: {{ session['username'] }} (Role: {{ session['role'] }})</p>
+    {% endif %}
+  </footer>
+
+</body>
+</html>

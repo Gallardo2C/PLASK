@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DirectLink - Welcome</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('{{ url_for("static", filename="images/Background1.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav { background-color: #333; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav ul li a {
+      display: block;
+      padding: 14px 20px;
+      color: white;
+      text-decoration: none;
+    }
+    nav ul li a:hover { background-color: #555; }
+    nav ul li:first-child a { background-color: #E37538; }
+    nav ul li:first-child a:hover { background-color: #d1662e; }
+
+    header {
+      background-color: rgba(34, 34, 34, 0.8);
+      color: white;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+    header img { height: 120px; margin-bottom: 20px; }
+    header h1 { font-size: 2.5em; }
+
+    main {
+      flex: 1;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    section {
+      margin-bottom: 60px;
+      text-align: center;
+      width: 100%;
+    }
+
+    h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .slider-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 20px;
+      flex-wrap: nowrap;
+      width: 100%;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+    .slider-container img {
+      min-width: 250px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .button {
+      background-color: #E37538;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      margin-top: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s;
+    }
+    .button:hover { background-color: #d1662e; }
+
+    /* Login / Register Card */
+    .auth-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 420px;
+      width: 100%;
+      margin: 20px auto;
+      backdrop-filter: blur(5px);
+    }
+
+    .auth-card h2 {
+      color: #E37538;
+      text-shadow: none;
+      margin-bottom: 25px;
+    }
+
+    .auth-card input, .auth-card select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    .password-container {
+      position: relative;
+    }
+    .show-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #E37538;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .switch-text {
+      margin-top: 20px;
+      font-size: 0.95em;
+    }
+    .switch-text a {
+      color: #E37538;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .switch-text a:hover { text-decoration: underline; }
+
+    footer {
+      background-color: #E37538;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: auto;
+    }
+    footer a { color: white; text-decoration: none; margin: 0 10px; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <img src="{{ url_for('static', filename='images/DL.png') }}" alt="DirectLink Logo">
+    <h1>DirectLink Premium Services</h1>
+    <p>Elevate your business with trusted, top-notch solutions.</p>
+  </header>
+
+  <main>
+
+    <section>
+      <h2>Why Choose Us?</h2>
+      <p style="color: white; max-width: 700px; margin: auto; font-size: 1.1em;">
+        From marketing to development, we tailor services that fit your business needs.
+      </p>
+
+      <div class="slider-container">
+        <img src="{{ url_for('static', filename='images/construc.png') }}" alt="Construction">
+        <img src="{{ url_for('static', filename='images/hand.webp') }}" alt="Handshake">
+        <img src="{{ url_for('static', filename='images/cleaning.png') }}" alt="Cleaning">
+        <img src="{{ url_for('static', filename='images/Computer-Repair-miami.jpg') }}" alt="Computer Repair">
+        <img src="{{ url_for('static', filename='images/customerservice.jpg') }}" alt="Customer Service">
+      </div>
+
+      <a href="{{ url_for('services') }}" class="button">View All Services</a>
+    </section>
+
+    <section>
+      <h2>Trusted Partnerships</h2>
+      <p style="color: white;">We collaborate with leading firms to bring the best digital solutions.</p>
+      <a href="https://www.deloitte.com/it/it/services.html" class="button">Meet Our Partners</a>
+    </section>
+
+    <!-- Login Form -->
+    <section>
+      <div class="auth-card" id="loginSection">
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+          <label>Username</label>
+          <input type="text" name="username" required>
+
+          <label>Password</label>
+          <div class="password-container">
+            <input type="password" name="password" id="password" required>
+            <button type="button" class="show-password" onclick="togglePass()">Show</button>
+          </div>
+
+          {% if error %}
+            <p class="error-message">{{ error }}</p>
+          {% endif %}
+
+          <button type="submit" class="button" style="width:100%; padding:14px;">Log In</button>
+        </form>
+
+        <p class="switch-text">
+          Don’t have an account? <a href="#" onclick="swapForms(true)">Register here</a>
+        </p>
+      </div>
+
+      <!-- Register Form -->
+      <div class="auth-card" id="registerSection" style="display:none;">
+        <h2>Register</h2>
+        <form method="POST" action="{{ url_for('register') }}">
+          <label>Username</label>
+          <input type="text" name="username" required>
+
+          <label>Password</label>
+          <div class="password-container">
+            <input type="password" name="password" id="regPass" required>
+            <button type="button" class="show-password" onclick="toggleReg()">Show</button>
+          </div>
+
+          <label>Role</label>
+          <select name="role" required>
+            <option value="">--Select Role--</option>
+            <option value="Consumer">Consumer</option>
+            <option value="Admin">Admin</option>
+            <option value="Provider">Provider</option>
+          </select>
+
+          {% if reg_error %}
+            <p class="error-message">{{ reg_error }}</p>
+          {% endif %}
+
+          <button type="submit" class="button" style="width:100%; padding:14px;">Register</button>
+        </form>
+
+        <p class="switch-text">
+          Already have an account? <a href="#" onclick="swapForms(false)">Login here</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2025 DirectLink Company. All rights reserved.</p>
+    <p>
+      <a href="{{ url_for('services') }}">Services</a> |
+      <a href="https://www.deloitte.com/it/it/services.html">Partners</a> |
+      <a href="{{ url_for('contact') }}">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    function togglePass() {
+      const p = document.getElementById("password");
+      p.type = p.type === "password" ? "text" : "password";
+    }
+
+    function toggleReg() {
+      const p = document.getElementById("regPass");
+      p.type = p.type === "password" ? "text" : "password";
+    }
+
+    function swapForms(toRegister) {
+      document.getElementById("loginSection").style.display = toRegister ? "none" : "block";
+      document.getElementById("registerSection").style.display = toRegister ? "block" : "none";
+    }
+  </script>
+</body>
+</html>
